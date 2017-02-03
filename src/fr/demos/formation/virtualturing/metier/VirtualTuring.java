@@ -1,55 +1,91 @@
 package fr.demos.formation.virtualturing.metier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
+import fr.demos.formation.virtualturing.utilitaire.Appariement;
 import fr.demos.formation.virtualturing.utilitaire.Donnee;
-import fr.demos.formation.virtualturing.utilitaire.Lecteur;
+import fr.demos.formation.virtualturing.utilitaire.Filtre;
 
 public class VirtualTuring {
-	
-	HashMap<String, String> univerDuDiscours;
-	String nomTuring= "Virtual Turing";
-	
-	public void initDiscours(){
-		
-		this.univerDuDiscours.put("Bonjour", "Bonjour!");
-		this.univerDuDiscours.put("Comment ça va?", "Ça va bien et toi?");
-		this.univerDuDiscours.put("Tu fais quoi?",  "Rien de spécial et toi?");
-		this.univerDuDiscours.put("Je vais a la plage", "C'est bien, il fait beau en plus");
-		this.univerDuDiscours.put("Profite bien", "Merci");
-		
-		
+
+	HashMap<Filtre, ArrayList<String>> univerDuDiscours = new HashMap<Filtre, ArrayList<String>>();
+
+	private String nomTuring = null;
+
+	public void initDiscours() {
+
+		this.univerDuDiscours.put(new Filtre("Bonjour"), new ArrayList<String>(Arrays.asList("Bonjour!", "Salut!", "Hey!")));
+
+		this.univerDuDiscours.put(new Filtre("Comment ça va?"),
+				new ArrayList<String>(Arrays.asList("Ça peut aller", "Bien!", "Tranquillement")));
+
+		this.univerDuDiscours.put(new Filtre("Tu fais quoi?"),
+				new ArrayList<String>(Arrays.asList("Rien de special et toi?", "Je mange!", "je suis au travail")));
+
+		this.univerDuDiscours.put(new Filtre("Tu deviens quoi?"), new ArrayList<String>(
+				Arrays.asList("Virtual Turing", "pourquoi cette question?", "Je ne veux pas te dire")));
+
 	}
-	public VirtualTuring(HashMap<String, String> univerDuDiscours) {
+
+	public VirtualTuring(String nom) {
 		super();
-		this.univerDuDiscours = univerDuDiscours;
+		this.nomTuring = nom;
+		this.initDiscours();
 	}
 
-	
-	public Donnee virtualTuring(HashMap<String, String> univerDuDiscours) {
+	public String retourneReponse(Donnee question) {
 
-		String ligneLue;
-		
-		
-	//	while (true) {
+		// System.out.println(question.getContenu());
+		String phraseChoisie = null;
+
+		Iterator<Filtre> iterator = univerDuDiscours.keySet().iterator();
+
+		while (iterator.hasNext()) {
+
+			System.out.println(iterator.next().getContenu());
+			Filtre filtre=iterator.next();
+			Appariement appariement = new Appariement(filtre, question);
 			
-			ligneLue = Lecteur.lireLigne();
-			System.out.println("Mouhamed: " + ligneLue);
-			int indexChoix = (int)(Math.random ()*univerDuDiscours.size ());
-		    String phraseChoisie = univerDuDiscours.get(indexChoix);
-			System.out.println(nomTuring+":" + phraseChoisie);
-//			if (ligneLue.equalsIgnoreCase("fin"))
-//				break;
-//			
-//		}
-//		
-		
-		Donnee donnee = new Donnee(Lecteur.recupLigne());
-		
-		return donnee;
+			
+
+			if (appariement.filtrage()) {
+
+				ArrayList<String> list = this.univerDuDiscours.get(filtre);
+
+				int indexChoix = (int) (Math.random() * list.size());
+
+				phraseChoisie = list.get(indexChoix);
+				break;
+			}
+			if (phraseChoisie == null)
+				phraseChoisie = "Je n'ai rien compris du tout...";
+		}
+
+		return phraseChoisie;
+	}
+
+	public String getNomTuring() {
+		return nomTuring;
+	}
+
+	public void setNomTuring(String nomTuring) {
+		this.nomTuring = nomTuring;
+	}
+
+	public Filtre construitFiltre(String chaineFiltre) {
+
+		StringTokenizer token = new StringTokenizer(chaineFiltre, " ,;:.!'\"?");
+		ArrayList<String> liste = new ArrayList<String>();
+		while (token.hasMoreTokens()) {
+			liste.add(token.nextToken());
+		}
+
+		return new Filtre(liste);
 
 	}
-	
-	
+
 }

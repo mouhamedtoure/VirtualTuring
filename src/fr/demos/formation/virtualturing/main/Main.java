@@ -1,42 +1,38 @@
 package fr.demos.formation.virtualturing.main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import fr.demos.formation.virtualturing.metier.VirtualTuring;
 import fr.demos.formation.virtualturing.utilitaire.Appariement;
 import fr.demos.formation.virtualturing.utilitaire.Donnee;
 import fr.demos.formation.virtualturing.utilitaire.Filtre;
+import fr.demos.formation.virtualturing.utilitaire.Lecteur;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		HashMap <String, String> univerDuDiscours = new HashMap <String, String>();
-		VirtualTuring virtual = new VirtualTuring(univerDuDiscours);
-		virtual.initDiscours();
+		// HashMap<String, ArrayList<String>> univerDuDiscours = new
+		// HashMap<String, ArrayList<String>>();
 
+		VirtualTuring virtual = new VirtualTuring("Turing");
+		// virtual.initDiscours();
 
-		Donnee donnee = virtual.virtualTuring(univerDuDiscours);
+		while (true) {
 
-		System.out.println(donnee.getContenu());
+			String question = Lecteur.lireLigne();
 
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("Je");
-		list.add("vais");
-		list.add("a");
-		list.add("la");
-		list.add("plage");
+			Donnee donnee = new Donnee(question);
+			String reponse = virtual.retourneReponse(donnee);
 
-		Filtre filtre = new Filtre(list);
-		
-		System.out.println(filtre.getContenu());
+			if (question.equalsIgnoreCase("fin"))
+				break;
 
-		Appariement ap = new Appariement(filtre, donnee);
-		
-		
-		System.out.println(ap.filtrage());
-		
+			System.out.println(virtual.getNomTuring() + " : " + reponse);
+
+		}
 	}
-	
 }

@@ -21,16 +21,15 @@ public class Appariement {
 			return false;
 
 		if (filtre.elementCourant().equalsIgnoreCase(donnee.elementCourant())) {
-	
+
 			filtre.passeALaSuite();
 			donnee.passeALaSuite();
 			return this.filtrage();
-			
+
 		}
-		
-		
+
 		else
-			
+
 			return false;
 	}
 
@@ -49,8 +48,5 @@ public class Appariement {
 	public void setDonnee(Donnee donnee) {
 		this.donnee = donnee;
 	}
-
-
-	
 
 }

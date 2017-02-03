@@ -8,9 +8,6 @@ public class Lecteur {
 
 	private static Scanner consoleEnLecture;
 	private static String ligneLue = null;
-	
-	
-	
 
 	public static String lireLigne() {
 
@@ -21,21 +18,18 @@ public class Lecteur {
 
 	}
 
-	public static ArrayList <String> recupLigne() {
-		
-		ArrayList <String> maDonnee= new ArrayList <String> (); 
-		
+	public static ArrayList<String> recupLigne() {
+
+		ArrayList<String> maDonnee = new ArrayList<String>();
+
 		StringTokenizer token = new StringTokenizer(Lecteur.ligneLue, " ,;:.!'\"");
-		
-		while (token.hasMoreTokens()){
-			
+
+		while (token.hasMoreTokens()) {
+
 			maDonnee.add(token.nextToken());
-			
+
 		}
 		return maDonnee;
 	}
-	
-	
-	
 
 }
